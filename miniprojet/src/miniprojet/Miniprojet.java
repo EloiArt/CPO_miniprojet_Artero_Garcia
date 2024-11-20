@@ -33,19 +33,21 @@ public class Miniprojet {
             int indexAleatoire = random.nextInt(couleurs.length);
 
             // Ajouter la couleur correspondante au tableau dynamique
-            tableauDynamique.add(couleurs[indexAleatoire]);
+            Combinaison.add(couleurs[indexAleatoire]);
         }
 
         // Afficher le contenu du tableau dynamique
-        System.out.println("Tableau dynamique de couleurs aléatoires : " + tableauDynamique);
+        System.out.println("Tableau dynamique de couleurs aléatoires : " + Combinaison);
     }
-}
-        
-        
-    }
-    
 }
 
-    }
+while false 
+
+        
     
-}
+    
+
+
+    
+    
+
