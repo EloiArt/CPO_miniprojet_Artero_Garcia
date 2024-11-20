@@ -5,7 +5,9 @@
 package miniprojet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 /**
  *
@@ -36,12 +38,33 @@ public class Miniprojet {
             Combinaison.add(couleurs[indexAleatoire]);
         }
 
-        // Afficher le contenu du tableau dynamique
-        System.out.println("Tableau dynamique de couleurs aléatoires : " + Combinaison);
+         // Créer un tableau pour stocker les valeurs
+        String[] tableau = new String[4];
+
+        // Créer un Scanner pour lire l'entrée utilisateur
+        Scanner scanner = new Scanner(System.in);
+
+        // Demander à l'utilisateur de saisir 4 valeurs
+        System.out.println("Veuillez entrer 4 valeurs :");
+
+        // Boucle pour remplir le tableau
+        for (int i = 0; i < tableau.length; i++) {
+            System.out.print("Valeur " + (i + 1) + " : ");
+            tableau[i] = scanner.nextLine(); // Lire la valeur et l'ajouter dans le tableau
+        }
+
+        // Afficher les valeurs saisies
+        
+        for (int i = 0; i < tableau.length; i++) {
+            
+            System.out.println("\nLe tableau entier est : " + Arrays.toString(tableau));
+        }
+
+      
     }
 }
 
-while false 
+
 
         
     
