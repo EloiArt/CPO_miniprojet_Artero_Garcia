@@ -58,13 +58,14 @@ public class Miniprojet {
     for(int j=0;j<tableau.size();j++){
         if(tableau.get(j).equals(Combinaison.get(j))){
             exact+=1;
-            j-=1;
-            tableau.remove(j);
-           
-            Combinaison.remove(j);
             if(exact==4){
                 System.out.println("vous avez gagné !!!");
             }
+           
+            tableau.remove(j);
+           
+            Combinaison.remove(j);
+            
         }
         else{
             exact+=0;
