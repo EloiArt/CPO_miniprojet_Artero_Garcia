@@ -57,10 +57,11 @@ public class Miniprojet {
         
         for (int i = 0; i < tableau.length; i++) {
             
-            System.out.println("\nLe tableau entier est : " + Arrays.toString(tableau));
+            
         }
 
-      
+      System.out.println("\nLe tableau entier est : " +Arrays.toString(tableau)); 
+      System.out.println("\nLe tableau aléatoire est : " + Combinaison.toString());
     }
 }
 
