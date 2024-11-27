@@ -39,7 +39,7 @@ public class Miniprojet {
         }
 
          // Créer un tableau pour stocker les valeurs
-        String[] tableau = new String[4];
+        ArrayList<String> tableau = new ArrayList<>();
 
         // Créer un Scanner pour lire l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -48,25 +48,29 @@ public class Miniprojet {
         System.out.println("Veuillez entrer 4 valeurs :");
 
         // Boucle pour remplir le tableau
-        for (int i = 0; i < tableau.length; i++) {
+        for (int i = 0; i < tableau.size(); i++) {
             System.out.print("Valeur " + (i + 1) + " : ");
-            tableau[i] = scanner.nextLine(); // Lire la valeur et l'ajouter dans le tableau
+            tableau.add(scanner.nextLine()); // Lire la valeur et l'ajouter dans le tableau
         }
 
         // Afficher les valeurs saisies
         
-        for (int i = 0; i < tableau.length; i++) {
+        for (int i = 0; i <4; i++) {
             
-            while(Arrays.toString(tableau)!=Combinaison.toString()){
-                for (int j = 0; j < tableau.length; j++) {
-            System.out.print("Valeur " + (j + 1) + " : ");
-            tableau[j] = scanner.nextLine();
-            System.out.println("\nLe tableau entier est : " +Arrays.toString(tableau));
+            while(tableau!=Combinaison){
+                System.out.println("\nLe tableau entier est : " +tableau.toString());
             System.out.println("\nLe tableau entier n'est pas la bon ");
+                for (int j = 0; j <4; j++) {
+            System.out.print("Valeur " + (j + 1) + " : ");
+            tableau.add(scanner.nextLine());
+            
+                    
+              
+            
             }
             
         }
-      System.out.println("\nLe tableau entier est : " +Arrays.toString(tableau)); 
+      System.out.println("\nLe tableau entier est : " +tableau.toString()); 
       System.out.println("\nLe tableau aléatoire est : " + Combinaison.toString());
     }
 }
