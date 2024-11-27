@@ -57,12 +57,19 @@ public class Miniprojet {
         
         for (int i = 0; i < tableau.length; i++) {
             
+            while(Arrays.toString(tableau)!=Combinaison.toString()){
+                for (int j = 0; j < tableau.length; j++) {
+            System.out.print("Valeur " + (j + 1) + " : ");
+            tableau[j] = scanner.nextLine();
+            System.out.println("\nLe tableau entier est : " +Arrays.toString(tableau));
+            System.out.println("\nLe tableau entier n'est pas la bon ");
+            }
             
         }
-
       System.out.println("\nLe tableau entier est : " +Arrays.toString(tableau)); 
       System.out.println("\nLe tableau aléatoire est : " + Combinaison.toString());
     }
+}
 }
 
 
