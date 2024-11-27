@@ -46,16 +46,34 @@ public class Miniprojet {
 
         // Demander à l'utilisateur de saisir 4 valeurs
         System.out.println("Veuillez entrer 4 valeurs :");
+        System.out.println(Combinaison);
 
         // Boucle pour remplir le tableau
         for (int i = 0; i <4; i++) {
             System.out.print("Valeur " + (i + 1) + " : ");
             tableau.add(scanner.nextLine()); // Lire la valeur et l'ajouter dans le tableau
         }
-    System.out.print("le tableau est "+tableau);
+    System.out.println("le tableau est "+tableau);
+    int exact=0;
     for(int j=0;j<tableau.size();j++){
+        if(tableau.get(j).equals(Combinaison.get(j))){
+            exact+=1;
+            j-=1;
+            tableau.remove(j);
+           
+            Combinaison.remove(j);
+            if(exact==4){
+                System.out.println("vous avez gagné !!!");
+            }
+        }
+        else{
+            exact+=0;
+            
+        }
         
     }
+    System.out.print("le nombre de valeurs exact est "+exact);
+    
     
     }}
 
