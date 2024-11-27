@@ -48,33 +48,17 @@ public class Miniprojet {
         System.out.println("Veuillez entrer 4 valeurs :");
 
         // Boucle pour remplir le tableau
-        for (int i = 0; i < tableau.size(); i++) {
+        for (int i = 0; i <4; i++) {
             System.out.print("Valeur " + (i + 1) + " : ");
             tableau.add(scanner.nextLine()); // Lire la valeur et l'ajouter dans le tableau
         }
-
-        // Afficher les valeurs saisies
+    System.out.print("le tableau est "+tableau);
+    for(int j=0;j<tableau.size();j++){
         
-        for (int i = 0; i <4; i++) {
-            
-            while(tableau!=Combinaison){
-                System.out.println("\nLe tableau entier est : " +tableau.toString());
-            System.out.println("\nLe tableau entier n'est pas la bon ");
-                for (int j = 0; j <4; j++) {
-            System.out.print("Valeur " + (j + 1) + " : ");
-            tableau.add(scanner.nextLine());
-            
-                    
-              
-            
-            }
-            
-        }
-      System.out.println("\nLe tableau entier est : " +tableau.toString()); 
-      System.out.println("\nLe tableau aléatoire est : " + Combinaison.toString());
     }
-}
-}
+    
+    }}
+
 
 
 
