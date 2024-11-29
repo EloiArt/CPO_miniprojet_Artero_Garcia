@@ -55,16 +55,15 @@ public class Miniprojet {
         }
     System.out.println("le tableau est "+tableau);
     int exact=0;
+ 
+    
     for(int j=0;j<tableau.size();j++){
         if(tableau.get(j).equals(Combinaison.get(j))){
             exact+=1;
-            if(exact==4){
-                System.out.println("vous avez gagné !!!");
-            }
+            
+            
            
-            tableau.remove(j);
-           
-            Combinaison.remove(j);
+     
             
         }
         else{
@@ -73,10 +72,28 @@ public class Miniprojet {
         }
         
     }
-    System.out.print("le nombre de valeurs exact est "+exact);
+    System.out.println("le nombre de valeurs exact est "+exact);
     
     
-    }}
+    int bonneValeur=0;
+    for(int j=0;j<tableau.size();j++){
+        if(tableau.contains(Combinaison.get(j))){
+            bonneValeur +=1;
+        }
+        else{
+            bonneValeur+=0;
+        }  
+        }
+    System.out.println("il y a "+bonneValeur+" bonne valeur");
+    
+    if (exact==4){
+        System.out.println("vous avez gagne youhou !!!");
+    }
+    }
+        
+    
+   
+}
 
 
 
