@@ -40,6 +40,9 @@ public class Miniprojet {
 
          // Créer un tableau pour stocker les valeurs
         ArrayList<String> tableau = new ArrayList<>();
+        // Tableau intermédiaire
+       ArrayList<String> tabInter= new ArrayList<>();
+       tabInter=tableau;
 
         // Créer un Scanner pour lire l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
@@ -60,7 +63,7 @@ public class Miniprojet {
     for(int j=0;j<tableau.size();j++){
         if(tableau.get(j).equals(Combinaison.get(j))){
             exact+=1;
-            
+            tabInter.remove(j);
             
            
      
@@ -76,8 +79,8 @@ public class Miniprojet {
     
     
     int bonneValeur=0;
-    for(int j=0;j<tableau.size();j++){
-        if(tableau.contains(Combinaison.get(j))){
+    for(int j=0;j<tabInter.size();j++){
+        if(tabInter.contains(Combinaison.get(j))){
             bonneValeur +=1;
         }
         else{
