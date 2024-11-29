@@ -23,77 +23,62 @@ public class Miniprojet {
         // Définir les couleurs possibles
         String[] couleurs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 
-        // Créer un tableau dynamique
-        ArrayList<String> Combinaison = new ArrayList<>();
-
-        // Générateur de nombres aléatoires
+        // Générer une combinaison aléatoire de 4 couleurs
+        ArrayList<String> combinaison = new ArrayList<>();
         Random random = new Random();
-
-        // Ajouter 4 couleurs aléatoires
         for (int i = 0; i < 4; i++) {
-            // Générer un index aléatoire entre 0 et la longueur du tableau de couleurs
-            int indexAleatoire = random.nextInt(couleurs.length);
-
-            // Ajouter la couleur correspondante au tableau dynamique
-            Combinaison.add(couleurs[indexAleatoire]);
+            combinaison.add(couleurs[random.nextInt(couleurs.length)]);
         }
 
-         // Créer un tableau pour stocker les valeurs
+        // Créer un tableau pour stocker les entrées utilisateur
         ArrayList<String> tableau = new ArrayList<>();
-        // Tableau intermédiaire
-       ArrayList<String> tabInter= new ArrayList<>();
-       tabInter=tableau;
 
         // Créer un Scanner pour lire l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
 
         // Demander à l'utilisateur de saisir 4 valeurs
-        System.out.println("Veuillez entrer 4 valeurs :");
-        System.out.println(Combinaison);
-
-        // Boucle pour remplir le tableau
-        for (int i = 0; i <4; i++) {
+        System.out.println("Veuillez entrer 4 valeurs parmi : a, b, c, d, e, f, g, h");
+        System.out.println( combinaison);
+        // Lire les valeurs utilisateur
+        for (int i = 0; i < 4; i++) {
             System.out.print("Valeur " + (i + 1) + " : ");
-            tableau.add(scanner.nextLine()); // Lire la valeur et l'ajouter dans le tableau
+            tableau.add(scanner.nextLine());
         }
-    System.out.println("le tableau est "+tableau);
-    int exact=0;
- 
-    
-    for(int j=0;j<tableau.size();j++){
-        if(tableau.get(j).equals(Combinaison.get(j))){
-            exact+=1;
-            tabInter.remove(j);
-            
-           
-     
-            
+
+        // Vérification des résultats
+        int exact = 0;
+        int bonneValeur = 0;
+
+        // Créer une copie de la combinaison pour manipulation
+        ArrayList<String> copieCombinaison = new ArrayList<>(combinaison);
+
+        // Vérifier les positions exactes
+        for (int i = 0; i < 4; i++) {
+            if (tableau.get(i).equals(copieCombinaison.get(i))) {
+                exact++;
+                tableau.set(i, null); // Marquer comme utilisée
+                copieCombinaison.set(i, null); // Marquer comme utilisée
+            }
         }
-        else{
-            exact+=0;
-            
+
+        // Vérifier les bonnes couleurs restantes
+        for (String valeur : tableau) {
+            if (valeur != null && copieCombinaison.contains(valeur)) {
+                bonneValeur++;
+                copieCombinaison.set(copieCombinaison.indexOf(valeur), null); // Marquer comme utilisée
+            }
         }
-        
-    }
-    System.out.println("le nombre de valeurs exact est "+exact);
-    
-    
-    int bonneValeur=0;
-    for(int j=0;j<Combinaison.size();j++){
-        if(tabInter.contains(Combinaison.get(j))){
-            bonneValeur +=1;
+
+        // Afficher les résultats
+        System.out.println("Nombre de valeurs exactes : " + exact);
+        System.out.println("Nombre de bonnes valeurs : " + bonneValeur);
+
+        if (exact == 4) {
+            System.out.println("Félicitations ! Vous avez gagné !");
+        } else {
+            System.out.println("Essayez encore ! La combinaison était : " + combinaison);
         }
-        else{
-            bonneValeur+=0;
-        }  
-        }
-    System.out.println("il y a "+bonneValeur+" bonne valeur");
-    
-    if (exact==4){
-        System.out.println("vous avez gagne youhou !!!");
-    }
-    }
-        
+    } 
     
    
 }
