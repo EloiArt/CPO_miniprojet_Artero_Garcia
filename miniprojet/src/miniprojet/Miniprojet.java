@@ -79,7 +79,7 @@ public class Miniprojet {
     
     
     int bonneValeur=0;
-    for(int j=0;j<tabInter.size();j++){
+    for(int j=0;j<Combinaison.size();j++){
         if(tabInter.contains(Combinaison.get(j))){
             bonneValeur +=1;
         }
