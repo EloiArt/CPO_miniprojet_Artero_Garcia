@@ -5,7 +5,6 @@
 package miniprojet;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -19,7 +18,6 @@ public class Miniprojet {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         // Définir les couleurs possibles
         String[] couleurs = {"a", "b", "c", "d", "e", "f", "g", "h"};
 
@@ -30,57 +28,65 @@ public class Miniprojet {
             combinaison.add(couleurs[random.nextInt(couleurs.length)]);
         }
 
-        // Créer un tableau pour stocker les entrées utilisateur
-        ArrayList<String> tableau = new ArrayList<>();
-
         // Créer un Scanner pour lire l'entrée utilisateur
         Scanner scanner = new Scanner(System.in);
 
-        // Demander à l'utilisateur de saisir 4 valeurs
-        System.out.println("Veuillez entrer 4 valeurs parmi : a, b, c, d, e, f, g, h");
-        System.out.println( combinaison);
-        // Lire les valeurs utilisateur
-        for (int i = 0; i < 4; i++) {
-            System.out.print("Valeur " + (i + 1) + " : ");
-            tableau.add(scanner.nextLine());
-        }
+        boolean gagne = false; // Flag pour vérifier la victoire
+        System.out.println(combinaison.toString());
 
-        // Vérification des résultats
-        int exact = 0;
-        int bonneValeur = 0;
+        // Boucle principale du jeu
+        while (!gagne) {
+            // Créer un tableau pour stocker les entrées utilisateur
+            ArrayList<String> tableau = new ArrayList<>();
 
-        // Créer une copie de la combinaison pour manipulation
-        ArrayList<String> copieCombinaison = new ArrayList<>(combinaison);
+            // Demander à l'utilisateur de saisir 4 valeurs
+            System.out.println("Veuillez entrer 4 valeurs parmi : a, b, c, d, e, f, g, h");
 
-        // Vérifier les positions exactes
-        for (int i = 0; i < 4; i++) {
-            if (tableau.get(i).equals(copieCombinaison.get(i))) {
-                exact++;
-                tableau.set(i, null); // Marquer comme utilisée
-                copieCombinaison.set(i, null); // Marquer comme utilisée
+            // Lire les valeurs utilisateur
+            for (int i = 0; i < 4; i++) {
+                System.out.print("Valeur " + (i + 1) + " : ");
+                tableau.add(scanner.nextLine());
+            }
+
+            // Vérification des résultats
+            int exact = 0;
+            int bonneValeur = 0;
+
+            // Créer une copie de la combinaison pour manipulation
+            ArrayList<String> copieCombinaison = new ArrayList<>(combinaison);
+
+            // Vérifier les positions exactes
+            for (int i = 0; i < 4; i++) {
+                if (tableau.get(i).equals(copieCombinaison.get(i))) {
+                    exact++;
+                    tableau.set(i, null); // Marquer comme utilisée
+                    copieCombinaison.set(i, null); // Marquer comme utilisée
+                }
+            }
+
+            // Vérifier les bonnes couleurs restantes
+            for (String valeur : tableau) {
+                if (valeur != null && copieCombinaison.contains(valeur)) {
+                    bonneValeur++;
+                    copieCombinaison.set(copieCombinaison.indexOf(valeur), null); // Marquer comme utilisée
+                }
+            }
+
+            // Afficher les résultats
+            System.out.println("Nombre de valeurs exactes : " + exact);
+            System.out.println("Nombre de bonnes valeurs : " + bonneValeur);
+
+            if (exact == 4) {
+                System.out.println("Felicitations ! Vous avez gagne !");
+                gagne = true; // L'utilisateur a gagné
+            } else {
+                System.out.println("Essayez encore !");
             }
         }
 
-        // Vérifier les bonnes couleurs restantes
-        for (String valeur : tableau) {
-            if (valeur != null && copieCombinaison.contains(valeur)) {
-                bonneValeur++;
-                copieCombinaison.set(copieCombinaison.indexOf(valeur), null); // Marquer comme utilisée
-            }
-        }
-
-        // Afficher les résultats
-        System.out.println("Nombre de valeurs exactes : " + exact);
-        System.out.println("Nombre de bonnes valeurs : " + bonneValeur);
-
-        if (exact == 4) {
-            System.out.println("Félicitations ! Vous avez gagné !");
-        } else {
-            System.out.println("Essayez encore ! La combinaison était : " + combinaison);
-        }
-    } 
-    
-   
+        // Afficher la combinaison après la victoire
+        System.out.println("La combinaison etait : " + combinaison);
+    }
 }
 
 
