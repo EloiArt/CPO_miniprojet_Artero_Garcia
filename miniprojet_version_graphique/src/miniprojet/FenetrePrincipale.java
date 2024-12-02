@@ -4,6 +4,9 @@
  */
 package miniprojet;
 
+import java.awt.GridLayout;
+import javax.swing.JButton;
+
 /**
  *
  * @author eloi
@@ -15,6 +18,15 @@ public class FenetrePrincipale extends javax.swing.JFrame {
      */
     public FenetrePrincipale() {
         initComponents();
+        int nbLignes = 10;
+        int nbColonnes = 4;
+        jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
+        for (int i=0; i < nbLignes; i++) {
+for (int j=0; j < nbColonnes; j++ ) {
+JButton bouton_cellule = new JButton(); // création d'un bouton
+jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
+}
+}
     }
 
     /**
@@ -41,10 +53,10 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 310, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 0, 400, 400));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 310));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
