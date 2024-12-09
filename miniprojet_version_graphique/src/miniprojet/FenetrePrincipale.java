@@ -5,7 +5,13 @@
 package miniprojet;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -13,20 +19,153 @@ import javax.swing.JButton;
  */
 public class FenetrePrincipale extends javax.swing.JFrame {
 
+    private ArrayList<String> combinaison; // La combinaison générée
+    private int tentativeActuelle = 0; // Compteur de tentatives
+    private final int nbLignes = 10;
+    private final int nbColonnes = 4;
+    private JButton[][] boutonsTentatives; // Boutons représentant les tentatives
+    private JLabel[] resultatsLabels; // Affichage des résultats de chaque tentative
+    private String[] couleurs = {"a", "b", "c", "d", "e", "f", "g", "h"}; // Couleurs possibles
+
     /**
      * Creates new form FenetrePrincipale
      */
     public FenetrePrincipale() {
-        initComponents();
-        int nbLignes = 10;
-        int nbColonnes = 4;
-        jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
-        for (int i=0; i < nbLignes; i++) {
-for (int j=0; j < nbColonnes; j++ ) {
-JButton bouton_cellule = new JButton(); // création d'un bouton
-jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
-}
-}
+        initJeu(); // Génération de la combinaison
+        initComponents(); // Initialisation des composants graphiques
+        boutonsTentatives = new JButton[nbLignes][nbColonnes]; // Initialisation des boutons
+        resultatsLabels = new JLabel[nbLignes]; // Initialisation des résultats
+        jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes + 1)); // Ajouter une colonne pour les résultats
+ 
+        // Initialisation de la grille des boutons et des résultats
+        for (int i = 0; i < nbLignes; i++) {
+            for (int j = 0; j < nbColonnes; j++) {
+                JButton boutonCellule = new JButton();
+                boutonCellule.setEnabled(false); // Désactivé par défaut sauf pour la tentative active
+                boutonsTentatives[i][j] = boutonCellule;
+                jPanel1.add(boutonCellule);
+            }
+            // Ajouter un JLabel pour les résultats à droite
+            JLabel resultatLabel = new JLabel(" ");
+            resultatsLabels[i] = resultatLabel;
+            jPanel1.add(resultatLabel);
+        }
+        activerLigne(tentativeActuelle); // Activer la première ligne pour le joueur
+    }
+
+    private void initJeu() {
+        // Générer une combinaison aléatoire
+        combinaison = new ArrayList<>();
+        Random random = new Random();
+        for (int i = 0; i < 4; i++) {
+            combinaison.add(couleurs[random.nextInt(couleurs.length)]);
+        }
+        System.out.println("Combinaison générée (debug) : " + combinaison); // Pour debug
+    }
+
+    /**
+     * Activer une ligne de boutons pour la tentative actuelle
+     */
+    private void activerLigne(int ligne) {
+        for (int j = 0; j < nbColonnes; j++) {
+            boutonsTentatives[ligne][j].setEnabled(true);
+            boutonsTentatives[ligne][j].addActionListener(new BoutonActionListener(ligne, j));
+        }
+    }
+
+    /**
+     * Désactiver une ligne de boutons après validation
+     */
+    private void desactiverLigne(int ligne) {
+        for (int j = 0; j < nbColonnes; j++) {
+            boutonsTentatives[ligne][j].setEnabled(false);
+        }
+    }
+
+    /**
+     * Vérifie la combinaison saisie par l'utilisateur
+     */
+    private void verifierTentative(ArrayList<String> saisieUtilisateur) {
+        int exact = 0;
+        int bonneValeur = 0;
+
+        // Créer une copie de la combinaison pour manipulation
+        ArrayList<String> copieCombinaison = new ArrayList<>(combinaison);
+
+        // Vérifier les positions exactes
+        for (int i = 0; i < 4; i++) {
+            if (saisieUtilisateur.get(i).equals(copieCombinaison.get(i))) {
+                exact++;
+                copieCombinaison.set(i, null); // Marquer comme utilisée
+                saisieUtilisateur.set(i, null); // Marquer comme utilisée
+            }
+        }
+
+        // Vérifier les bonnes couleurs restantes
+        for (String valeur : saisieUtilisateur) {
+            if (valeur != null && copieCombinaison.contains(valeur)) {
+                bonneValeur++;
+                copieCombinaison.set(copieCombinaison.indexOf(valeur), null); // Marquer comme utilisée
+            }
+        }
+
+        // Afficher les résultats dans la colonne des résultats
+        resultatsLabels[tentativeActuelle].setText("Exact: " + exact + " | Correct: " + bonneValeur);
+
+        // Vérification du résultat
+        if (exact == 4) {
+            JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !");
+            System.exit(0);
+        } else if (tentativeActuelle == nbLignes - 1) {
+            JOptionPane.showMessageDialog(this, "Vous avez perdu ! La combinaison était : " + combinaison);
+            System.exit(0);
+        }
+
+        // Passer à la tentative suivante
+        desactiverLigne(tentativeActuelle);
+        tentativeActuelle++;
+        if (tentativeActuelle < nbLignes) {
+            activerLigne(tentativeActuelle);
+        }
+    }
+
+    /**
+     * Classe interne pour gérer les clics sur les boutons
+     */
+    private class BoutonActionListener implements ActionListener {
+
+        private final int ligne;
+        private final int colonne;
+
+        public BoutonActionListener(int ligne, int colonne) {
+            this.ligne = ligne;
+            this.colonne = colonne;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String saisie = JOptionPane.showInputDialog("Entrez une couleur (a-h) :");
+            if (saisie != null && saisie.matches("[a-h]")) {
+                boutonsTentatives[ligne][colonne].setText(saisie.toUpperCase());
+            } else {
+                JOptionPane.showMessageDialog(null, "Saisie invalide ! Entrez une lettre entre a et h.");
+            }
+
+            // Vérifier si la ligne est complète
+            boolean ligneComplete = true;
+            ArrayList<String> saisieUtilisateur = new ArrayList<>();
+            for (int j = 0; j < nbColonnes; j++) {
+                String texte = boutonsTentatives[ligne][j].getText();
+                if (texte == null || texte.isEmpty()) {
+                    ligneComplete = false;
+                }
+                saisieUtilisateur.add(texte.toLowerCase());
+            }
+
+            if (ligneComplete) {
+                verifierTentative(saisieUtilisateur);
+            }
+        }
     }
 
     /**
@@ -41,22 +180,25 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
         jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 400));
+        setPreferredSize(new java.awt.Dimension(600, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(150, 150, 150));
+        jPanel1.setPreferredSize(new java.awt.Dimension(600, 400));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGap(0, 400, Short.MAX_VALUE)
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -70,23 +212,16 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
+       try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FenetrePrincipale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FenetrePrincipale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FenetrePrincipale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             java.util.logging.Logger.getLogger(FenetrePrincipale.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
