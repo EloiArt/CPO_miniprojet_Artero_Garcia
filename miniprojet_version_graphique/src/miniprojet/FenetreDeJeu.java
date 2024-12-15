@@ -61,15 +61,17 @@ private JLabel[] resultLabels;
                 private boolean isFirstClick = true;
                 private int currentLetterIndex = 0;
 
-                @Override
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                    if (isFirstClick) {
-                        bouton_cellule.setText(String.valueOf(lettres[0]));
-                        isFirstClick = false;
-                    } else {
-                        currentLetterIndex = (currentLetterIndex + 1) % lettres.length;
-                        bouton_cellule.setText(String.valueOf(lettres[currentLetterIndex]));
-                    }
+               @Override
+    public void actionPerformed(java.awt.event.ActionEvent evt) {
+        // Si c'est le premier clic, on affiche 'a'
+        if (isFirstClick) {
+            bouton_cellule.setText(String.valueOf(lettres[0])); // Affiche 'a' au premier clic
+            isFirstClick = false;
+        } else {
+            // On fait défiler les lettres
+            currentLetterIndex = (currentLetterIndex + 1) % lettres.length; // Défiler les lettres
+            bouton_cellule.setText(String.valueOf(lettres[currentLetterIndex]));
+        }
                 }
             });
 
@@ -77,6 +79,10 @@ private JLabel[] resultLabels;
             jPanel1.add(bouton_cellule);
         }
     }
+    JOptionPane.showMessageDialog(this, 
+    "La combinaison secrète est : " + plateau.getCombinaisonSecrete(), 
+    "Combinaison Secrète", 
+    JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -209,9 +215,10 @@ private JLabel[] resultLabels;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         boolean ligneValidee = true;
+        boolean ligneValidee = true;
     String[] couleursLigne = new String[4];  // Tableau pour stocker les couleurs de la ligne active
 
+    // Récupération des couleurs de la ligne active
     for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
         String couleur = boutonsGrille[ligneActive][j].getText();
         if (couleur.isEmpty()) {
@@ -233,22 +240,36 @@ private JLabel[] resultLabels;
         int correctes = plateau.verifierCouleursCorrectes(tentative);
 
         // Affiche les résultats sur le JPanel3
-        // Mettre à jour les labels de résultats dans jPanel3
-        resultLabels[ligneActive].setText("Exactes : " + exact + ", Correctes : " + correctes);
+        if (ligneActive < resultLabels.length) {
+            resultLabels[ligneActive].setText("Exactes : " + exact + ", Correctes : " + correctes);
+        } else {
+            // Ajouter une vérification de taille avant d'ajouter des résultats
+            System.out.println("Erreur : ligneActive dépasse la taille de resultLabels.");
+        }
 
         // Désactive les boutons de la ligne actuelle
         for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
             boutonsGrille[ligneActive][j].setEnabled(false);
         }
 
-        // Activer la ligne suivante si elle existe
-        ligneActive++;
-        if (ligneActive < boutonsGrille.length) {
-            for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
-                boutonsGrille[ligneActive][j].setEnabled(true);
-            }
+        // Vérification de la victoire
+        if (exact == 4) {
+            JOptionPane.showMessageDialog(this, "Félicitations, vous avez trouvé la combinaison secrète !", 
+                                          "Victoire", JOptionPane.INFORMATION_MESSAGE);
+            jButton1.setEnabled(false); // Désactive le bouton Valider une fois le jeu terminé
+            return; // Assurez-vous de sortir de la méthode après avoir affiché le message de victoire
         } else {
-            jButton1.setEnabled(false); // Désactive le bouton "Valider" si c'est la dernière ligne
+            // Activer la ligne suivante si elle existe
+            ligneActive++;
+            if (ligneActive < boutonsGrille.length) {
+                for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
+                    boutonsGrille[ligneActive][j].setEnabled(true);
+                }
+            } else {
+                jButton1.setEnabled(false); // Désactive le bouton "Valider" si c'est la dernière ligne
+                JOptionPane.showMessageDialog(this, "Vous avez épuisé toutes vos tentatives. Vous avez perdu.", 
+                                              "Fin du jeu", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     } else {
         JOptionPane.showMessageDialog(this, 
