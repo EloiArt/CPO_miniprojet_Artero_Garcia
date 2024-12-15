@@ -13,8 +13,8 @@ import java.util.Scanner;
  *
  * @author eloi
  */
-public class Miniprojet {
-public static void main(String[] args) {
+ public class Miniprojet {
+    public static void main(String[] args) {
         Partie partie = new Partie();
         partie.jouer();
     }

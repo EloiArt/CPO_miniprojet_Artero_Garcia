@@ -10,7 +10,7 @@ package miniprojet;
  */
 public class Pion {
     
-private String couleur;
+    private String couleur;
 
     public Pion(String couleur) {
         this.couleur = couleur;
@@ -32,5 +32,8 @@ private String couleur;
         return couleur.equals(pion.couleur);
     }
 }
+
+
+
 
 

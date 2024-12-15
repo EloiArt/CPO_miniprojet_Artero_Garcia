@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Combinaison {
     
- private ArrayList<Pion> pions;
+    private ArrayList<Pion> pions;
 
     public Combinaison() {
         this.pions = new ArrayList<>();
@@ -32,20 +32,15 @@ public class Combinaison {
     }
 
     public ArrayList<Pion> getPions() {
-    return new ArrayList<>(pions); // Retourne une copie pour éviter les modifications externes
-}
-    
-    
+        return new ArrayList<>(pions); // Retourne une copie pour éviter les modifications externes
+    }
+
     public Pion getPion(int index) {
         return pions.get(index);
     }
 
     public int getTaille() {
         return pions.size();
-    }
-
-    public void retirerPion(int index) {
-        pions.remove(index);
     }
 
     @Override

@@ -4,6 +4,8 @@
  */
 package miniprojet;
 
+import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -12,7 +14,7 @@ import java.util.Scanner;
  */
 public class Partie {
     
-private static final String[] COULEURS_POSSIBLES = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    private static final String[] COULEURS_POSSIBLES = {"a", "b", "c", "d", "e", "f", "g", "h"};
 
     public void jouer() {
         PlateauDeJeu plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
