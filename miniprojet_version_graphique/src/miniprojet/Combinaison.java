@@ -35,6 +35,7 @@ public class Combinaison {
     return new ArrayList<>(pions); // Retourne une copie pour éviter les modifications externes
 }
     
+    
     public Pion getPion(int index) {
         return pions.get(index);
     }

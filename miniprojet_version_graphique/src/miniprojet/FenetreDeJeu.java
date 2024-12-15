@@ -6,6 +6,8 @@ package miniprojet;
 
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,39 +18,65 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     /**
      * Creates new form FenetreDeJeu
      */
+    private JButton[][] boutonsGrille; // Tableau pour stocker les boutons par ligne et colonne
+    private int ligneActive = 0;
+    private PlateauDeJeu plateau;  // Ajout de l'instance de PlateauDeJeu
+private final String[] COULEURS_POSSIBLES = {"a", "b", "c", "d", "e", "f", "g", "h"};
+private JLabel[] resultLabels;
+// Indique la ligne actuellement active
+
+    /**
+     * Creates new form FenetreDeJeu
+     */
     public FenetreDeJeu() {
         initComponents();
-        int nbLignes = 10;
-int nbColonnes = 4;
-char[] lettres = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
-jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
-for (int i=0; i < nbLignes; i++) {
-for (int j=0; j < nbColonnes; j++ ) {
-JButton bouton_cellule = new JButton(); // création d'un bouton
-final int index = (i * nbColonnes + j) % lettres.length;
-            bouton_cellule.setText(""); 
+    int nbLignes = 10;
+    int nbColonnes = 4;
+    char[] lettres = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
 
-            // Action du bouton pour changer la lettre à chaque clic
+    plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
+
+    boutonsGrille = new JButton[nbLignes][nbColonnes];
+    jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
+
+    // Initialisation des labels pour les résultats
+    resultLabels = new JLabel[nbLignes];
+    jPanel3.setLayout(new GridLayout(nbLignes, 1)); // Un label par ligne
+    for (int i = 0; i < nbLignes; i++) {
+        resultLabels[i] = new JLabel("Résultats ligne " + (i + 1) + ": -/-");
+        jPanel3.add(resultLabels[i]);
+    }
+
+    // Initialisation des boutons dans la grille
+    for (int i = 0; i < nbLignes; i++) {
+        for (int j = 0; j < nbColonnes; j++) {
+            JButton bouton_cellule = new JButton();
+            bouton_cellule.setText("");
+            bouton_cellule.setEnabled(i == 0);
+
+            final int currentRow = i;
+            final int currentCol = j;
+
             bouton_cellule.addActionListener(new java.awt.event.ActionListener() {
-                private boolean isFirstClick = true; // Variable pour vérifier si c'est le premier clic
-                private int currentLetterIndex = 0; // Index de la lettre (commence avec 'a')
+                private boolean isFirstClick = true;
+                private int currentLetterIndex = 0;
 
                 @Override
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     if (isFirstClick) {
-                        bouton_cellule.setText(String.valueOf(lettres[0])); // Affiche 'a' au premier clic
-                        isFirstClick = false; // Désactive l'état "premier clic"
+                        bouton_cellule.setText(String.valueOf(lettres[0]));
+                        isFirstClick = false;
                     } else {
-                        // Sinon, on change la lettre suivante dans l'ordre
-                        currentLetterIndex = (currentLetterIndex + 1) % lettres.length; // faire défiler les lettres
+                        currentLetterIndex = (currentLetterIndex + 1) % lettres.length;
                         bouton_cellule.setText(String.valueOf(lettres[currentLetterIndex]));
                     }
                 }
             });
 
-jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
-}
-}
+            boutonsGrille[i][j] = bouton_cellule;
+            jPanel1.add(bouton_cellule);
+        }
+    }
     }
 
     /**
@@ -117,7 +145,7 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 138, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,8 +186,8 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE))))
-                .addGap(0, 72, Short.MAX_VALUE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 66, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,6 +209,53 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+         boolean ligneValidee = true;
+    String[] couleursLigne = new String[4];  // Tableau pour stocker les couleurs de la ligne active
+
+    for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
+        String couleur = boutonsGrille[ligneActive][j].getText();
+        if (couleur.isEmpty()) {
+            ligneValidee = false;
+            break;
+        }
+        couleursLigne[j] = couleur;  // Récupère les couleurs de la ligne
+    }
+
+    if (ligneValidee) {
+        // Crée une nouvelle combinaison à partir des couleurs sélectionnées
+        Combinaison tentative = new Combinaison();
+        for (String couleur : couleursLigne) {
+            tentative.ajouterPion(couleur);  // Ajoute chaque couleur à la tentative
+        }
+
+        // Utilisation de l'instance plateau pour vérifier la combinaison
+        int exact = plateau.verifierCombinaisonExacte(tentative);
+        int correctes = plateau.verifierCouleursCorrectes(tentative);
+
+        // Affiche les résultats sur le JPanel3
+        // Mettre à jour les labels de résultats dans jPanel3
+        resultLabels[ligneActive].setText("Exactes : " + exact + ", Correctes : " + correctes);
+
+        // Désactive les boutons de la ligne actuelle
+        for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
+            boutonsGrille[ligneActive][j].setEnabled(false);
+        }
+
+        // Activer la ligne suivante si elle existe
+        ligneActive++;
+        if (ligneActive < boutonsGrille.length) {
+            for (int j = 0; j < boutonsGrille[ligneActive].length; j++) {
+                boutonsGrille[ligneActive][j].setEnabled(true);
+            }
+        } else {
+            jButton1.setEnabled(false); // Désactive le bouton "Valider" si c'est la dernière ligne
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, 
+            "Veuillez remplir toutes les cellules de la ligne avant de valider.", 
+            "Erreur", JOptionPane.ERROR_MESSAGE);
+    }
+     
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -227,3 +302,4 @@ jPanel1.add(bouton_cellule); // ajout au Jpanel PanneauGrille
     private javax.swing.JPanel jPanel4;
     // End of variables declaration//GEN-END:variables
 }
+
