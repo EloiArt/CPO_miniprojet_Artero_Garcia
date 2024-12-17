@@ -21,7 +21,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private JButton[][] boutonsGrille; // Tableau pour stocker les boutons par ligne et colonne
     private int ligneActive = 0;
     private PlateauDeJeu plateau;  // Ajout de l'instance de PlateauDeJeu
-private final String[] COULEURS_POSSIBLES = {"a", "b", "c", "d", "e", "f", "g", "h"};
+private final String[] COULEURS_POSSIBLES = {"r", "b", "v", "j"};
 private JLabel[] resultLabels;
 // Indique la ligne actuellement active
 
@@ -32,7 +32,7 @@ private JLabel[] resultLabels;
         initComponents();
     int nbLignes = 10;
     int nbColonnes = 4;
-    char[] lettres = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+    char[] lettres = {'r', 'b', 'v', 'j'};
 
     plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
 
