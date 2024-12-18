@@ -14,7 +14,7 @@ import java.util.Scanner;
  */
 public class Partie {
     
-    private static final String[] COULEURS_POSSIBLES = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    private static final String[] COULEURS_POSSIBLES = {"r", "b", "v", "j"};
 
     public void jouer() {
         PlateauDeJeu plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
