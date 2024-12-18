@@ -18,72 +18,78 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     /**
      * Creates new form FenetreDeJeu
      */
-    private JButton[][] boutonsGrille; // Tableau pour stocker les boutons par ligne et colonne
+    private JButton[][] boutonsGrille;
     private int ligneActive = 0;
-    private PlateauDeJeu plateau;  // Ajout de l'instance de PlateauDeJeu
-private final String[] COULEURS_POSSIBLES = {"r", "b", "v", "j"};
-private JLabel[] resultLabels;
-// Indique la ligne actuellement active
+    private PlateauDeJeu plateau;
+    private final String[] COULEURS_POSSIBLES = {"r", "b", "v", "j"};
+    private final java.awt.Color[] COULEURS_REELLES = {
+        java.awt.Color.RED,        // r -> Rouge
+        java.awt.Color.BLUE,       // b -> Bleu
+        java.awt.Color.GREEN,      // v -> Vert
+        java.awt.Color.YELLOW     // j -> Jaune
+    };
+    private JLabel[] resultLabels;
 
-    /**
-     * Creates new form FenetreDeJeu
-     */
     public FenetreDeJeu() {
         initComponents();
-    int nbLignes = 10;
-    int nbColonnes = 4;
-    char[] lettres = {'r', 'b', 'v', 'j'};
+        int nbLignes = 10;
+        int nbColonnes = 4;
+        plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
 
-    plateau = new PlateauDeJeu(COULEURS_POSSIBLES);
+        boutonsGrille = new JButton[nbLignes][nbColonnes];
+        jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
 
-    boutonsGrille = new JButton[nbLignes][nbColonnes];
-    jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
-
-    // Initialisation des labels pour les résultats
-    resultLabels = new JLabel[nbLignes];
-    jPanel3.setLayout(new GridLayout(nbLignes, 1)); // Un label par ligne
-    for (int i = 0; i < nbLignes; i++) {
-        resultLabels[i] = new JLabel("Résultats ligne " + (i + 1) + ": -/-");
-        jPanel3.add(resultLabels[i]);
-    }
-
-    // Initialisation des boutons dans la grille
-    for (int i = 0; i < nbLignes; i++) {
-        for (int j = 0; j < nbColonnes; j++) {
-            JButton bouton_cellule = new JButton();
-            bouton_cellule.setText("");
-            bouton_cellule.setEnabled(i == 0);
-
-            final int currentRow = i;
-            final int currentCol = j;
-
-            bouton_cellule.addActionListener(new java.awt.event.ActionListener() {
-                private boolean isFirstClick = true;
-                private int currentLetterIndex = 0;
-
-               @Override
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        // Si c'est le premier clic, on affiche 'a'
-        if (isFirstClick) {
-            bouton_cellule.setText(String.valueOf(lettres[0])); // Affiche 'a' au premier clic
-            isFirstClick = false;
-        } else {
-            // On fait défiler les lettres
-            currentLetterIndex = (currentLetterIndex + 1) % lettres.length; // Défiler les lettres
-            bouton_cellule.setText(String.valueOf(lettres[currentLetterIndex]));
+        // Initialisation des labels pour les résultats
+        resultLabels = new JLabel[nbLignes];
+        jPanel3.setLayout(new GridLayout(nbLignes, 1)); // Un label par ligne
+        for (int i = 0; i < nbLignes; i++) {
+            resultLabels[i] = new JLabel("Résultats ligne " + (i + 1) + ": -/-");
+            jPanel3.add(resultLabels[i]);
         }
-                }
-            });
 
-            boutonsGrille[i][j] = bouton_cellule;
-            jPanel1.add(bouton_cellule);
+        // Initialisation des boutons dans la grille
+        for (int i = 0; i < nbLignes; i++) {
+            for (int j = 0; j < nbColonnes; j++) {
+                JButton bouton_cellule = new JButton();
+                bouton_cellule.setText("");
+                bouton_cellule.setEnabled(i == 0);
+
+                final int currentRow = i;
+                final int currentCol = j;
+
+                bouton_cellule.addActionListener(new java.awt.event.ActionListener() {
+                    private boolean isFirstClick = true;
+                    private int currentLetterIndex = 0;
+
+                    @Override
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        // Si c'est le premier clic, on affiche la couleur rouge
+                        if (isFirstClick) {
+                            bouton_cellule.setBackground(COULEURS_REELLES[0]); // Rouge pour le premier clic
+                            bouton_cellule.setText("r"); // Affiche 'r'
+                            isFirstClick = false;
+                        } else {
+                            // On fait défiler les couleurs
+                            currentLetterIndex = (currentLetterIndex + 1) % COULEURS_POSSIBLES.length;
+                            bouton_cellule.setBackground(COULEURS_REELLES[currentLetterIndex]); // Change la couleur de fond
+                            bouton_cellule.setText(COULEURS_POSSIBLES[currentLetterIndex]); // Affiche la lettre correspondante
+                        }
+                    }
+                });
+
+                boutonsGrille[i][j] = bouton_cellule;
+                jPanel1.add(bouton_cellule);
+            }
         }
+
+        JOptionPane.showMessageDialog(this, 
+            "La combinaison secrète est : " + plateau.getCombinaisonSecrete(), 
+            "Combinaison Secrète", 
+            JOptionPane.INFORMATION_MESSAGE);
     }
-    JOptionPane.showMessageDialog(this, 
-    "La combinaison secrète est : " + plateau.getCombinaisonSecrete(), 
-    "Combinaison Secrète", 
-    JOptionPane.INFORMATION_MESSAGE);
-    }
+
+    // Le reste du code reste inchangé...
+
 
     /**
      * This method is called from within the constructor to initialize the form.
