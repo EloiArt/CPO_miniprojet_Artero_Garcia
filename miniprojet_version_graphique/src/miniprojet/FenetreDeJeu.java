@@ -67,12 +67,14 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                         if (isFirstClick) {
                             bouton_cellule.setBackground(COULEURS_REELLES[0]); // Rouge pour le premier clic
                             bouton_cellule.setText("r"); // Affiche 'r'
+                            bouton_cellule.setForeground(COULEURS_REELLES[0]); // Affiche 'r' en rouge
                             isFirstClick = false;
                         } else {
                             // On fait défiler les couleurs
                             currentLetterIndex = (currentLetterIndex + 1) % COULEURS_POSSIBLES.length;
                             bouton_cellule.setBackground(COULEURS_REELLES[currentLetterIndex]); // Change la couleur de fond
                             bouton_cellule.setText(COULEURS_POSSIBLES[currentLetterIndex]); // Affiche la lettre correspondante
+                            bouton_cellule.setForeground(COULEURS_REELLES[currentLetterIndex]); // Change la couleur du texte en fonction de la lettre
                         }
                     }
                 });
@@ -87,6 +89,9 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             "Combinaison Secrète", 
             JOptionPane.INFORMATION_MESSAGE);
     }
+
+    // Le reste du code reste inchangé...
+
 
     // Le reste du code reste inchangé...
 
