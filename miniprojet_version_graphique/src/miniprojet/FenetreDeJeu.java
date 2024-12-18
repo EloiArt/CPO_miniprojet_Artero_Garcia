@@ -9,24 +9,17 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author eloi
- */
 public class FenetreDeJeu extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FenetreDeJeu
-     */
     private JButton[][] boutonsGrille;
     private int ligneActive = 0;
     private PlateauDeJeu plateau;
     private final String[] COULEURS_POSSIBLES = {"r", "b", "v", "j"};
     private final java.awt.Color[] COULEURS_REELLES = {
-        java.awt.Color.RED,        // r -> Rouge
-        java.awt.Color.BLUE,       // b -> Bleu
-        java.awt.Color.GREEN,      // v -> Vert
-        java.awt.Color.YELLOW     // j -> Jaune
+        java.awt.Color.RED,
+        java.awt.Color.BLUE,
+        java.awt.Color.GREEN,
+        java.awt.Color.YELLOW
     };
     private JLabel[] resultLabels;
 
@@ -39,20 +32,20 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         boutonsGrille = new JButton[nbLignes][nbColonnes];
         jPanel1.setLayout(new GridLayout(nbLignes, nbColonnes));
 
-        // Initialisation des labels pour les résultats
         resultLabels = new JLabel[nbLignes];
-        jPanel3.setLayout(new GridLayout(nbLignes, 1)); // Un label par ligne
+        jPanel3.setLayout(new GridLayout(nbLignes, 1));
         for (int i = 0; i < nbLignes; i++) {
             resultLabels[i] = new JLabel("Résultats ligne " + (i + 1) + ": -/-");
             jPanel3.add(resultLabels[i]);
         }
 
-        // Initialisation des boutons dans la grille
         for (int i = 0; i < nbLignes; i++) {
             for (int j = 0; j < nbColonnes; j++) {
                 JButton bouton_cellule = new JButton();
                 bouton_cellule.setText("");
                 bouton_cellule.setEnabled(i == 0);
+                bouton_cellule.setOpaque(true);
+                bouton_cellule.setBorderPainted(false);
 
                 final int currentRow = i;
                 final int currentCol = j;
@@ -63,18 +56,16 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
                     @Override
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        // Si c'est le premier clic, on affiche la couleur rouge
                         if (isFirstClick) {
-                            bouton_cellule.setBackground(COULEURS_REELLES[0]); // Rouge pour le premier clic
-                            bouton_cellule.setText("r"); // Affiche 'r'
-                            bouton_cellule.setForeground(COULEURS_REELLES[0]); // Affiche 'r' en rouge
+                            bouton_cellule.setBackground(COULEURS_REELLES[0]);
+                            bouton_cellule.setText("r");
+                            bouton_cellule.setForeground(COULEURS_REELLES[0]);
                             isFirstClick = false;
                         } else {
-                            // On fait défiler les couleurs
                             currentLetterIndex = (currentLetterIndex + 1) % COULEURS_POSSIBLES.length;
-                            bouton_cellule.setBackground(COULEURS_REELLES[currentLetterIndex]); // Change la couleur de fond
-                            bouton_cellule.setText(COULEURS_POSSIBLES[currentLetterIndex]); // Affiche la lettre correspondante
-                            bouton_cellule.setForeground(COULEURS_REELLES[currentLetterIndex]); // Change la couleur du texte en fonction de la lettre
+                            bouton_cellule.setBackground(COULEURS_REELLES[currentLetterIndex]);
+                            bouton_cellule.setText(COULEURS_POSSIBLES[currentLetterIndex]);
+                            bouton_cellule.setForeground(COULEURS_REELLES[currentLetterIndex]);
                         }
                     }
                 });
@@ -89,7 +80,6 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             "Combinaison Secrète", 
             JOptionPane.INFORMATION_MESSAGE);
     }
-
     // Le reste du code reste inchangé...
 
 
